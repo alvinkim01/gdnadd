@@ -94,15 +94,25 @@ function App() {
       <Row className="mb-3">
       <div class="card bg-secondary text-white">
   <div class="card-body">
-    <h4 class="card-title">[가디언넷] GDN 클라우드 문의 및 화상미팅</h4>
-    <p class="card-text"><p>안녕하세요,클라우드 보안의 전문가그룹 가디언넷입니다.</p>
+    <h4 class="card-title"><strong>[가디언넷] GDN 클라우드 문의 및 화상미팅</strong></h4><br />
+    {/* <p class="card-text"><p>안녕하세요,클라우드 보안의 전문가그룹 가디언넷입니다.</p>
           <p>클라우드보안 서비스에 간단한 연동으로 클라우드보안 쉽게 관리할 수 있는 아래의 기능을 제공합니다. </p>
 
           <p>클라우드 보안 관련 각종 메시지</p>
           <p>답변 저장</p>
           <p>답변 조회</p>
 
-          <p>원활한 상담 진행을 위해 아래 정보를 작성해 주세요.</p></p>
+          <p>원활한 상담 진행을 위해 아래 정보를 작성해 주세요.</p></p> */}
+    <p className="card-text">
+        안녕하세요,클라우드 보안의 전문가그룹 가디언넷입니다.<br /><br />
+        클라우드보안 서비스에 간단한 연동으로 클라우드보안 쉽게 관리할 수 있는 아래의 기능을 제공합니다.<br />
+        클라우드 보안 관련 각종 메시지<br />
+        답변 저장<br />
+        답변 조회<br />
+        
+        원활한 상담 진행을 위해 아래 정보를 작성해 주세요.<br /><br />
+        GDN Cloud 대표 홈페이지: <a href="https://www.gdncloud.com/">https://www.gdncloud.com/</a>
+        </p>
  
   </div>    
   </div>
@@ -131,21 +141,23 @@ function App() {
       
     <Row className="mb-3">
         <Form.Group controlId="formBasicEmail" className="col col-sm-6">
-            <Form.Label>소속 및 이름을 입력해 주세요 (필수) * </Form.Label>
+            <Form.Label><strong>소속 및 이름을 입력해 주세요 (필수)</strong><span style={{ color: 'red' }}>*</span></Form.Label>
             <Form.Control type="name" name="name" value={name} onChange={handleInputChange} className="form-control" />
         </Form.Group>
     </Row>
     <Row className="mb-3">
         <Form.Group controlId="formBasicMobile" className="col col-sm-6">
-            <Form.Label>전화번호를 입력해 주세요.(필수)* <p>미팅 일정 수립을 위해 연락을 드릴 수 있습니다.</p>
- </Form.Label>
+            <Form.Label><strong>전화번호를 입력해 주세요.(필수)</strong><span style={{ color: 'red' }}>*</span><p>미팅 일정 수립을 위해 연락을 드릴 수 있습니다.</p>
+            </Form.Label>
             <InputGroup>
                 {/* <InputGroup.Text id="basic-addon1">010</InputGroup.Text> */}
                 <Form.Control aria-label="Mobile Number" type="mobile" aria-describedby="basic-addon1" className="form-control" name="mobile" value={mobile} onChange={handleInputChange} />
             </InputGroup>
         </Form.Group>
+    </Row>
+    <Row className="mb-3">
         <Form.Group controlId="formBasicEmail" className="col col-sm-6">
-            <Form.Label>이메일을 입력해 주세요.(필수)*
+            <Form.Label><strong>이메일을 입력해 주세요.(필수)</strong><span style={{ color: 'red' }}>*</span>
              <p>입력하신 이메일로 화상회의 초대장이 발송됩니다.</p> </Form.Label>
             <InputGroup>
                 <Form.Control aria-label="Recipient's username" aria-describedby="basic-addon2" type="email" name="email" value={email} onChange={handleInputChange} />
@@ -153,6 +165,8 @@ function App() {
             </InputGroup>
         </Form.Group>
     </Row>
+ 
+    
     {/* <Row className="mb-3">
         <Form.Group className=" col col-sm-6" controlId="formGridAddress1">
             <Form.Label>Address</Form.Label>
@@ -195,15 +209,21 @@ function App() {
             </Form.Select>
         </Form.Group> */}
         <Form.Group controlId="formGridlabel" className="col col-sm-6">
-            <Form.Label>화상 미팅이 가능한 일정을 3개정도 알려주세요. (선택)
+            <Form.Label><strong>화상 미팅이 가능한 일정을 3개정도 알려주세요. (선택)</strong>
              <p>날짜와 시간을 입력해주세요.</p> </Form.Label>
-            <Form.Control as="textarea" rows="{3}" className="form-control" name="order" value={order} onChange={handleInputChange} />
+            <Form.Control as="textarea" rows="{5}" className="form-control" name="order" value={order} onChange={handleInputChange} />
         </Form.Group>
+        <Form.Group controlId="formBasicCheckbox1" className="mb-4">
+            <Form.Check type="checkbox" label="(필수)개인정보 수집·이용 동의서" />
+         </Form.Group>
+        <Form.Group controlId="formBasicCheckbox2" className="mb-4">
+            <Form.Check type="checkbox" label="(선택)개인정보 수집·이용 동의서" />
+      </Form.Group>
     </Row>
     <Row className="mb-3">
         <Form.Group controlId="formGridCheckbox" className="col col-sm-6">
-            <button type="submit" onClick={handleSubmit} className="me-4 btn btn-success btn-lg btn-block">Submit</button>
-            <button type="reset" onClick={resetButton} className="me-4 btn btn-danger btn-lg btn-block">Cancel</button>
+            <button type="submit" onClick={handleSubmit} className="me-4 btn btn-success btn-lg btn-block">제출하기</button>
+            <button type="reset" onClick={resetButton} className="me-4 btn btn-danger btn-lg btn-block">취소하기</button>
         </Form.Group>
     </Row>
 </form>
