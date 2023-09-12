@@ -3,18 +3,18 @@ import { useState,useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, InputGroup, Row } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+// import Button from 'react-bootstrap/Button';
+// import Card from 'react-bootstrap/Card';
 import fireDB from './firebase';
 import { toast,ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const initialState = {
-    name : "",
-    mobile :"",
-    email :"",
-    order:""
-
+    name: "",
+    mobile: "",
+    email: "",
+    order: "",
+    done: "NotDone" // done 속성을 초기화합니다.
 }
 
 function App() {
@@ -28,49 +28,57 @@ function App() {
   const [state,setState] = useState(initialState);
 //   const [data,setData] = useState({});
   
-  const {name,mobile,email,order} =state;
+  const {name,mobile,email,order,done} =state;
 
-  useEffect(()=>{
-    fireDB.child("contacts").on("value",(snapshot) =>{
-        if (snapshot.val() !==null) {
-            setState({...snapshot.val()});
-        } else{
-            setState({});
-        }
-    });
-    return () =>{
+  useEffect(() => {
+    const ref = fireDB.child("contacts");
+    const onDataChange = (snapshot) => {
+      if (snapshot.val() !== null) {
+        setState({ ...snapshot.val() });
+      } else {
         setState({});
+      }
     };
-},[]);
+  
+    ref.on("value", onDataChange);
+  
+    return () => {
+      ref.off("value", onDataChange); // 이 부분을 추가하여 이벤트 리스너를 제거합니다.
+    };
+  }, []);
+  
 
-  const handleInputChange = (e) =>{
-    const {name,value} = e.target;
-    setState({...state,[name] :value})
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  
+    // 만약 "done" 값을 업데이트하려면 다음과 같이 처리할 수 있습니다.
+    if (name === "done") {
+      setState({ ...state, done: value });
+    }
   }
 
  
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !email || !mobile ) {
+    if (!name || !email || !mobile) {
       showToastMessage();
-      
-     
-
-    //   toast.error("Please provide value in each input field");
-    } else {        
-            fireDB.child("contacts").push(state, (err) => {
-                if (err) {
-                    toast.error('오류가 발생하였습니다.', {
-                        position: toast.POSITION.TOP_CENTER
-                    });
-                } else {
-                    toast.success('정상적으로 메시지가 전송되었습니다.', {
-                        position: toast.POSITION.TOP_CENTER
-                    });                   
-                }
-              });
-              resetButton()
-           }    
+    } else {
+      const newData = { name, email, mobile, order, done };
+      // Firebase 데이터베이스에 새로운 데이터 추가
+      fireDB.child("contacts").push(newData, (err) => {
+        if (err) {
+          toast.error('오류가 발생하였습니다.', {
+            position: toast.POSITION.TOP_CENTER
+          });
+        } else {
+          toast.success('정상적으로 메시지가 전송되었습니다.', {
+            position: toast.POSITION.TOP_CENTER
+          });
+        }
+      });
+      resetButton();
+    }
   }
 
   const resetButton = () => {
@@ -78,7 +86,8 @@ function App() {
       name: '',
       mobile: '',
       email: '',
-      order: ''
+      order: '',
+      done : 'NotDone'
     });
   }
 
@@ -95,14 +104,7 @@ function App() {
       <div class="card bg-secondary text-white">
   <div class="card-body">
     <h4 class="card-title"><strong>[가디언넷] GDN 클라우드 문의 및 화상미팅</strong></h4><br />
-    {/* <p class="card-text"><p>안녕하세요,클라우드 보안의 전문가그룹 가디언넷입니다.</p>
-          <p>클라우드보안 서비스에 간단한 연동으로 클라우드보안 쉽게 관리할 수 있는 아래의 기능을 제공합니다. </p>
-
-          <p>클라우드 보안 관련 각종 메시지</p>
-          <p>답변 저장</p>
-          <p>답변 조회</p>
-
-          <p>원활한 상담 진행을 위해 아래 정보를 작성해 주세요.</p></p> */}
+   
     <p className="card-text">
         안녕하세요,클라우드 보안의 전문가그룹 가디언넷입니다.<br /><br />
         클라우드보안 서비스에 간단한 연동으로 클라우드보안 쉽게 관리할 수 있는 아래의 기능을 제공합니다.<br />
@@ -117,25 +119,7 @@ function App() {
   </div>    
   </div>
       
-{/* <Card style={{ width: "80rem" }}>
-        <Card.Body>
-          <Card.Title style={{ color: "green" }}><h3>[가디언넷] GDN Cloud 문의</h3></Card.Title>
-          <Card.Subtitle className="mb-4 text-muted">
-           <h3>One Stop 질의 응답 센터</h3>
-          </Card.Subtitle>
-          <Card.Text>
-          <p>안녕하세요,클라우드 보안의 전문가그룹 가디언넷입니다.</p>
-          <p>클라우드보안 서비스에 간단한 연동으로 클라우드보안 쉽게 관리할 수 있는 아래의 기능을 제공합니다. </p>
 
-          <p>클라우드 보안 관련 각종 메시지</p>
-          <p>답변 저장</p>
-          <p>답변 조회</p>
-
-          <p>원활한 상담 진행을 위해 아래 정보를 작성해 주세요.</p>
-          </Card.Text>
-        </Card.Body>
-      </Card> */}
-    
 </Row>
 
       
@@ -164,50 +148,9 @@ function App() {
                 {/* <InputGroup.Text id="basic-addon2">@gmail.com</InputGroup.Text> */}
             </InputGroup>
         </Form.Group>
-    </Row>
- 
+    </Row> 
     
-    {/* <Row className="mb-3">
-        <Form.Group className=" col col-sm-6" controlId="formGridAddress1">
-            <Form.Label>Address</Form.Label>
-            <Form.Control className="form-control" type="text" name="address1" value="{form.address1}" onChange="{handleChange}" />
-        </Form.Group>
-        <Form.Group className="col col-sm-6" controlId="formGridAddress2">
-            <Form.Label>Address 2</Form.Label>
-            <Form.Control className="form-control" name="address2" value="{form.address2}" onChange="{handleChange}" type="text" />
-        </Form.Group>
-    </Row>
-    <Row className="mb-3">
-        <Form.Group controlId="formGridCity" className="col col-sm-4">
-            <Form.Label>City</Form.Label>
-            <Form.Control className="form-control" type="text" name="city" value="{form.city}" onChange="{handleChange}" />
-        </Form.Group>
-        <Form.Group controlId="formGridState" className="col col-sm-4">
-            <Form.Label>State</Form.Label>
-            <Form.Select defaultValue="Choose..." className="form-control" name="a_state" value="{form.a_state}" onChange="{handleChange}">
-                <option value="Choose...">Choose...</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Bombay">Bommbay</option>
-                <option value="New York">New York</option>
-                <option value="Kashmir">Kashmir</option>
-            </Form.Select>
-        </Form.Group>
-        <Form.Group controlId="formGridpin" className="col col-sm-4">
-            <Form.Label>Pin Code</Form.Label>
-            <Form.Control className="form-control" type="pin" name="pin" value="{form.pin}" onChange="{handleChange}" />
-        </Form.Group>
-    </Row> */}
-    <Row className="mb-3">
-        {/* <Form.Group controlId="formGridCheckbox" className="col col-sm-6">
-            <Form.Label>Menu</Form.Label>
-            <Form.Select defaultValue="Choose..." className="form-control" name="menu" value="{form.menu}" onChange="{handleChange}">
-                <option value="Choose...">Choose...</option>
-                <option value="Veg Biryani">Veg Biryani</option>
-                <option value="BBQ Chicken Wings">BBQ Chicken Wings</option>
-                <option value="Rasmalai">Rasmalai</option>
-                <option value="Beer">Beer</option>
-            </Form.Select>
-        </Form.Group> */}
+    <Row className="mb-3"> 
         <Form.Group controlId="formGridlabel" className="col col-sm-6">
             <Form.Label><strong>화상 미팅이 가능한 일정을 3개정도 알려주세요. (선택)</strong>
              <p>날짜와 시간을 입력해주세요.</p> </Form.Label>
