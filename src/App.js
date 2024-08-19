@@ -74,6 +74,33 @@ function App() {
     }
   }
 
+//   const nodemailer = require('nodemailer');
+
+// // Nodemailer를 사용하여 이메일을 보내는 함수
+// const sendEmail = async (emailData) => {
+//   let transporter = nodemailer.createTransport({
+//     service: 'gmail', // 이메일 서비스 제공자
+//     auth: {
+//       user: 'your-email@gmail.com', // 보내는 사람의 이메일 주소
+//       pass: 'your-password' // 보내는 사람의 이메일 비밀번호
+//     }
+//   });
+
+//   let mailOptions = {
+//     from: 'alvinkim01@gmail.com', // 보내는 사람의 이메일 주소
+//     to: 'alvinkim01@gmail.com', // 받는 사람의 이메일 주소
+//     subject: 'Firebase에서 새로운 문의가 등록되었습니다', // 메일 제목
+//     text: `회사명: ${emailData.company}, 담당자명: ${emailData.name}, 이메일: ${emailData.email}, 전화번호: ${emailData.mobile}, 문의내용: ${emailData.order}` // 메일 내용
+//   };
+
+//   transporter.sendMail(mailOptions, function(error, info){
+//     if (error) {
+//       console.log(error);
+//     } else {
+//       console.log('Email sent: ' + info.response);
+//     }
+//   });
+// };
  
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -99,6 +126,8 @@ function App() {
           toast.success('정상적으로 메시지가 전송되었습니다.', {
             position: toast.POSITION.TOP_CENTER
           });
+               // 이메일 전송 함수 호출
+        // sendEmail(newData);
         }
       });
       resetButton();
@@ -161,11 +190,11 @@ function App() {
       <Row className="mb-3">
       <div class="card bg-secondary text-white">
   <div class="card-body">
-    <h4 class="card-title"><strong>[GDNcloud] GDNCloud 관련 문의</strong></h4><br />
+    <h4 class="card-title"><strong>[Gnfortress] Gnfotress 관련 문의</strong></h4><br />
    
     <p className="card-text">
         안녕하세요,클라우드 보안의 전문가그룹 가디언넷입니다.<br /><br />
-        GDNcloud 의 문의에 대한 답변을 빠르게 성심껏 답변 드리겠습니다.<br />
+        Gnfortress 의 문의에 대한 답변을 빠르게 성심껏 답변 드리겠습니다.<br />
         
         원활한 문의에 대한 상담 진행을 위해 아래 정보를 작성해 주세요.<br /><br />
     </p>
@@ -191,7 +220,7 @@ function App() {
 
     <Row className="mb-3">
         <Form.Group controlId="formBasicMobile" className="col col-sm-6">
-            <Form.Label><strong>전화번호를 입력해 주세요.(필수)</strong><span style={{ color: 'red' }}>*</span><p>gdncloud 셋팅 및 귀사 담당 엔지니어 할당을 위해 연락을 드릴 수 있습니다.</p>
+            <Form.Label><strong>전화번호를 입력해 주세요.(필수)</strong><span style={{ color: 'red' }}>*</span><p>Gnfortress 셋팅 및 귀사 담당 엔지니어 할당을 위해 연락을 드릴 수 있습니다.</p>
             </Form.Label>
             <InputGroup>
                 {/* <InputGroup.Text id="basic-addon1">010</InputGroup.Text> */}
@@ -212,7 +241,7 @@ function App() {
     
     <Row className="mb-3"> 
         <Form.Group controlId="formGridlabel" className="col col-sm-6">
-            <Form.Label><strong>원할한 GDNCloud 의 셋팅 및 준비를 위하여. (선택)</strong>
+            <Form.Label><strong>원할한 Gnfortress 의 셋팅 및 준비를 위하여. (선택)</strong>
              <p>귀사의 클라우드 서버의 수량과 OS정보 및 구성정보를 입력해주시면 빠른 대응이 가능합니다.</p> </Form.Label>
             <Form.Control as="textarea" rows="{5}" className="form-control" name="order" value={order} onChange={handleInputChange} />
         </Form.Group>
@@ -224,8 +253,8 @@ function App() {
     </Row>
     <Row className="mb-3">
         <Form.Group controlId="formGridCheckbox" className="col col-sm-6">
-            <button type="submit" onClick={handleSubmit} className="me-4 btn btn-success btn-lg btn-block">제출하기</button>
-            <button type="reset" onClick={resetButton} className="me-4 btn btn-danger btn-lg btn-block">취소하기</button>
+            <button type="submit" onClick={handleSubmit} className="me-4 btn btn-primary btn-lg btn-block">제출하기</button>
+            <button type="reset" onClick={resetButton} className="me-4 btn btn-secondary btn-lg btn-block">취소하기</button>
         </Form.Group>
     </Row>
 </form>
